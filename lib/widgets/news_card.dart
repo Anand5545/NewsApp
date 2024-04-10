@@ -2,6 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tasknews/presentation/Homescreen/controller/homescreencontroller.dart';
+import 'package:tasknews/presentation/wishlist/controller/wishlist_ctrl.dart';
+import 'package:tasknews/presentation/wishlist/view/wishlistscreen.dart';
 
 class NewsCard extends StatelessWidget {
   final String imageUrl;
@@ -70,7 +72,17 @@ class NewsCard extends StatelessWidget {
                         .sharetext(textToShare: newsToShare);
                   },
                   icon: Icon(Icons.share)),
-              IconButton(onPressed: () {}, icon: Icon(Icons.bookmark_outline))
+              IconButton(
+                onPressed: () {
+                  Provider.of<Wishlist_ctrl>(context, listen: false)
+                      .addToWishlist(imageUrl, title, description);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => WishlistScreen()),
+                  );
+                },
+                icon: Icon(Icons.bookmark_outline),
+              )
             ],
           )
         ],

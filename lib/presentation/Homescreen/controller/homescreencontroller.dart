@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:tasknews/repository/api/cart.dart';
 import 'package:tasknews/repository/api/topheadlines.dart';
 import 'package:http/http.dart' as http;
 
@@ -40,5 +41,13 @@ class HomeScreenController with ChangeNotifier {
     } catch (e) {
       print("Error Sharing: $e");
     }
+  }
+
+  List<Cart> wishlist = [];
+
+  void addToWishlist(String imageUrl, String title, String description) {
+    wishlist
+        .add(Cart(imageurl: imageUrl, title: title, description: description));
+    notifyListeners();
   }
 }
