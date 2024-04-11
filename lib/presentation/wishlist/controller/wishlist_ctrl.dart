@@ -12,8 +12,15 @@ class Wishlist_ctrl extends ChangeNotifier {
     // Save wishlist to storage
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setStringList(
-        'wishlist', wishlist.map((cart) => cart.title).toList());
+        'wishlist', wishlist.map((cart) => cart.title).toSet().toList());
 
+    notifyListeners();
+  }
+
+  void removeFromWishlist(String title) {
+    // Remove the card from the wishlist based on its title
+    wishlist.removeWhere((cart) => cart.title == title);
+    // Notify listeners that the state has changed
     notifyListeners();
   }
 }

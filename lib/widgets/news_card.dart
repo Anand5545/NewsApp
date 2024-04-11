@@ -3,9 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tasknews/presentation/Homescreen/controller/homescreencontroller.dart';
 import 'package:tasknews/presentation/wishlist/controller/wishlist_ctrl.dart';
-import 'package:tasknews/presentation/wishlist/view/wishlistscreen.dart';
 
-class NewsCard extends StatelessWidget {
+class NewsCard extends StatefulWidget {
   final String imageUrl;
   final String title;
   final String description;
@@ -16,6 +15,12 @@ class NewsCard extends StatelessWidget {
     required this.description,
   });
 
+  @override
+  State<NewsCard> createState() => _NewsCardState();
+}
+
+class _NewsCardState extends State<NewsCard> {
+  bool outline = false;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -37,7 +42,7 @@ class NewsCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           CachedNetworkImage(
-            imageUrl: imageUrl,
+            imageUrl: widget.imageUrl,
             placeholder: (context, url) =>
                 Center(child: CircularProgressIndicator()),
             errorWidget: (context, url, error) =>
@@ -51,7 +56,7 @@ class NewsCard extends StatelessWidget {
           // ),
           SizedBox(height: 10.0),
           Text(
-            title,
+            widget.title,
             style: TextStyle(
               fontSize: 20.0,
               fontWeight: FontWeight.bold,
@@ -59,7 +64,7 @@ class NewsCard extends StatelessWidget {
           ),
           SizedBox(height: 5.0),
           Text(
-            description,
+            widget.description,
             style: TextStyle(fontSize: 16.0),
           ),
           SizedBox(height: 5.0),
@@ -67,21 +72,47 @@ class NewsCard extends StatelessWidget {
             children: [
               IconButton(
                   onPressed: () {
-                    String newsToShare = "$title \n \n $description \n \n $Uri";
+                    String newsToShare =
+                        "${widget.title} \n \n ${widget.description} \n \n $Uri";
                     Provider.of<HomeScreenController>(context, listen: false)
                         .sharetext(textToShare: newsToShare);
                   },
                   icon: Icon(Icons.share)),
+              // IconButton(
+              //   onPressed: () {
+              //     Provider.of<Wishlist_ctrl>(context, listen: false)
+              //         .addToWishlist(
+              //             widget.imageUrl, widget.title, widget.description);
+              //   },
+              //   icon: Icon(
+              //     Icons.bookmark_outline,
+              //     color: Provider.of<Wishlist_ctrl>(context)
+              //             .wishlist
+              //             .contains(widget.title)
+              //         ? Colors.red
+              //         : Colors.black,
+              //   ),
+              // )
               IconButton(
                 onPressed: () {
-                  Provider.of<Wishlist_ctrl>(context, listen: false)
-                      .addToWishlist(imageUrl, title, description);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => WishlistScreen()),
-                  );
+                  setState(() {
+                    outline = !outline;
+                  });
+                  if (outline) {
+                    // Add to wishlist
+                    Provider.of<Wishlist_ctrl>(context, listen: false)
+                        .addToWishlist(
+                            widget.imageUrl, widget.title, widget.description);
+                  } else {
+                    // Remove from wishlist
+                    Provider.of<Wishlist_ctrl>(context, listen: false)
+                        .removeFromWishlist(widget.title);
+                  }
                 },
-                icon: Icon(Icons.bookmark_outline),
+                icon: Icon(
+                  Icons.bookmark_outline,
+                  color: outline ? Colors.red : Colors.black,
+                ),
               )
             ],
           )
