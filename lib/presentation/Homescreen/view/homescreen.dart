@@ -82,10 +82,12 @@ class _NewsAppState extends State<NewsApp> {
             ),
           ],
         ),
-        body: ListView.builder(
-            itemCount: categoryController.newsModel?.articles?.length,
-            itemBuilder: (context, index) {
-              return NewsCard(
+        body: Container(
+          height: MediaQuery.of(context).size.height,
+          child: ListView.builder(
+              itemCount: categoryController.newsModel?.articles?.length ?? 0,
+              itemBuilder: (context, index) {
+                return NewsCard(
                   imageUrl: categoryController
                           .newsModel?.articles?[index].urlToImage
                           .toString() ??
@@ -96,8 +98,22 @@ class _NewsAppState extends State<NewsApp> {
                   description: categoryController
                           .newsModel?.articles?[index].description
                           .toString() ??
-                      "");
-            }),
+                      "",
+                  date: provider.newsModel?.articles?[index].publishedAt,
+                  url: categoryController.newsModel?.articles?[index].urlToImage
+                          .toString() ??
+                      "",
+                  contant: categoryController
+                          .newsModel?.articles?[index].content
+                          .toString() ??
+                      "",
+                  sourceName: categoryController
+                          .newsModel?.articles?[index].source
+                          .toString() ??
+                      "",
+                );
+              }),
+        ),
       ),
     );
   }

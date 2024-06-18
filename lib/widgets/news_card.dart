@@ -3,17 +3,26 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tasknews/presentation/Homescreen/controller/homescreencontroller.dart';
 import 'package:tasknews/presentation/wishlist/controller/wishlist_ctrl.dart';
+import 'package:tasknews/widgets/news_viewscreen.dart';
 
 class NewsCard extends StatefulWidget {
   final String imageUrl;
   final String title;
   final String description;
+  final DateTime? date;
+  final String contant;
+  final String sourceName;
+  final String url;
 
-  const NewsCard({
-    required this.imageUrl,
-    required this.title,
-    required this.description,
-  });
+  const NewsCard(
+      {super.key,
+      required this.title,
+      required this.description,
+      required this.date,
+      required this.imageUrl,
+      required this.contant,
+      required this.sourceName,
+      required this.url});
 
   @override
   State<NewsCard> createState() => _NewsCardState();
@@ -67,6 +76,24 @@ class _NewsCardState extends State<NewsCard> {
             widget.description,
             style: TextStyle(fontSize: 16.0),
           ),
+          SizedBox(height: 5.0),
+          // InkWell(
+          //   onTap: () {
+          //     Navigator.push(
+          //       context,
+          //       MaterialPageRoute(
+          //         builder: (context) => NewsViewScreen(
+          //           title: widget.title,
+          //           description: widget.description,
+          //           imageUrl: widget.imageUrl,
+          //           contant: widget.contant,
+          //           sourceName: widget.sourceName,
+          //           url: widget.url,
+          //         ),
+          //       ),
+          //     );
+          //   },
+          // ),
           SizedBox(height: 5.0),
           Row(
             children: [
